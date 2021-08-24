@@ -1,0 +1,143 @@
+<!DOCTYPE html>
+{%load static%}
+
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title></title>
+    <link href="https://fonts.googleapis.com/css2?family=Raleway:wght@400;600;900&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="{%static "css/style.css"%}">
+</head>
+<body>
+     <script>
+    function view(n) {
+    style = document.getElementById(n).style;
+    style.display = (style.display == 'block') ? 'none' : 'block';
+    }
+    </script>
+    <header>
+        <div class="container">
+            <div class="top-header flex-between">
+                <a href="/" class="logo flex-between">
+                    <div>
+                        <p class="logo-top">Быхов</p>
+                        <p class="logo-bottom">Велосипедный</p>
+                    </div>
+                    <img src="{% static "images/logo.svg"%}" class="logo-img" />
+                </a>
+                <div class="partners">
+                    <img src="{% static "images/es.png"%}" />
+                    <img src="{% static "images/rb.png"%}"  />
+                    <img src="{% static "images/undp.png"%}"  />
+                </div>
+            </div>
+            <div class="flex-between">
+                <div class="nav">
+                    <a href="/" class="nav-item active">Маршруты</a>
+                    <a href="{%url 'articles'%}" class="nav-item">Статьи</a>
+                    <a href="{%url 'about'%}" class="nav-item">О нас</a>
+                    <a href="{% url 'objects'%}" class="nav-item">Объекты</a>
+                    <a href="{%url 'navigator'%}"  class="nav-item">Навигатор</a>
+                    {% if user.is_authenticated %}
+                    <a href="{%url 'saved'%}" class="nav-item">Кабинет</a>
+                    {% endif %}
+                </div>
+                <div class="account flex-between">
+                    {% if user.is_authenticated %}
+                    <p class="account-title">Привет, {{ user.username }}!</p>
+                    {% else %}
+                    <a href="{% url 'login' %}">Войти</a>
+                    {% endif %}
+                    <img class="account-avatar" src="{% static "images/avatar.png"%}"/>
+                </div>
+            </div>
+        </div>
+    </header>
+    <section class="main-content">
+     <div class="container">
+        <div class="flex-between">
+            <h1>Выбрать тип маршрута:</h1>
+            <p>Вы можете с легкостью определиться с маршрутом на свое 
+                усмотрение и отправиться <br> в незабываемое приключение по культурным местам нашего города.</p>
+        </div>
+         <div class="flex-between routes">
+            {% for velomarsh in marhs.all %}
+            <div class="route">
+                <img class="route-img"  src="{{ velomarsh.marsh_image.url }}"  />
+                <div class="flex-between">
+                    <a href="{%url 'showoMarsh' velomarsh.id  %}"><p class="route-title">{{ velomarsh.marsh_text }}</p></a>
+                    <i class="arrow-right"></i>
+                </div>
+            </div>
+
+            {% endfor %}
+        </div>
+        <button class="main-button big-button button">Создать новый маршрут</button>
+    </div> 
+    <div class="faq-section">
+        <div class="container faq-container" style="background: url('{% static 'images/faq.svg' %}') right center no-repeat">
+            <div class="right-faq-container">
+            <h2>Часто задаваемые вопросы</h2>
+            {% for que in quetion.all %}
+            <div class="faq-item">
+                <div class="faq-item active">
+                <div class="faq-title">
+                    <a onclick="view({{que.id}})"; class="a" return false"><div class="faq-text">{{ que.que_text}}</div></a>
+                </div>
+                <div>
+                <div id='{{ que.id}}' style="display: none;">
+                <div class="faq-content">{{ que.que_text_raz}}</div>
+            </div>
+            </div>
+                {% endfor %}
+
+            <a href="{%url 'about' %}#que"  class="reverse-button big-button button">Задать свой вопрос</a>
+        </div>
+        </div>
+    </div>
+    </section>
+    <footer>
+        <div class="container flex-between">
+            <div class="address-block">
+                <div class="ontop">
+                    Наверх
+                </div>
+                <p class="phone">+375 29 123 98 98</p>
+                <div class="mail">example@gmail.com</div>
+            </div>
+            <div class="footer-nav">
+                <a href="/" class="footer-nav-item">Маршруты</a>
+                <a href="{%url 'articles'%}" class="footer-nav-item">Статьи</a>
+                <a href="{%url 'about'%}"  class="footer-nav-item">О нас</a>
+                <a href="{%url 'objects'%}"class="footer-nav-item">Объекты</a>
+                <a href="{%url 'navigator'%}" class="footer-nav-item">Навигатор</a>
+                 {% if user.is_authenticated %}
+                    <a href="{%url 'saved'%}" class="nav-item">Кабинет</a>
+                    {% endif %}
+                <a href="{%url 'registration'%}" class="footer-nav-item">Регистрация</a>
+
+            </div>
+            <div class="footer-text">
+                Сайт разработан в рамках реализации инициативы «Быхов-инновационный», 
+                в рамках проекта «Поддержка экономического развития на местном уровне 
+                в Республике Беларусь», который финансируется Европейским союзом (ЕС)
+                 и реализуется Программой развития ООН (ПРООН) в партнерстве 
+                 с Министерством экономики Республики Беларусь
+            </div>
+            <div class="footer-logo">
+                <a href="/" class="logo flex-between">
+                    <div>
+                        <p class="logo-top">Быхов</p>
+                        <p class="logo-bottom">Велосипедный</p>
+                    </div>
+                    <img src="{% static "images/logo.svg" class="logo-img"%}"  />
+                </a>
+                <div class="copy">&copy; 2020 Быхов Велосипедный</div>
+            </div>
+        </div>
+
+    </footer>
+
+</body>
+</html>

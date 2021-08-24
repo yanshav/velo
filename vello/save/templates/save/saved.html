@@ -1,0 +1,232 @@
+<!DOCTYPE html>
+{%load static%}
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title></title>
+    <link href="https://fonts.googleapis.com/css2?family=Raleway:wght@400;600;900&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="{%static "css/style.css"%}">
+</head>
+<body>
+    <header>
+        <div class="container">
+            <div class="top-header flex-between">
+                <a href="/" class="logo flex-between">
+                    <div>
+                        <p class="logo-top">Быхов</p>
+                        <p class="logo-bottom">Велосипедный</p>
+                    </div>
+                    <img src="{% static "images/logo.svg"%}" class="logo-img" />
+                </a>
+                <div class="partners">
+                    <img src="{% static "images/es.png"%}"  />
+                    <img src="{% static "images/rb.png"%}"  />
+                    <img src="{% static "images/undp.png"%}"  />
+                </div>
+            </div>
+            <div class="flex-between">
+               <div class="nav">
+                    <a href="/" class="nav-item active">Маршруты</a>
+                    <a href="{%url 'articles'%}" class="nav-item">Статьи</a>
+                    <a href="{%url 'about'%}" class="nav-item">О нас</a>
+                    <a href="{%url 'objects'%}" class="nav-item">Объекты</a>
+                    <a href="{%url 'navigator'%}" class="nav-item">Навигатор</a>
+                   {% if user.is_authenticated %}
+                    <a href="{%url 'saved'%}" class="nav-item">Кабинет</a>
+                    {% endif %}
+                </div>
+                <div class="account flex-between">
+                   {% if user.is_authenticated %}
+                    <p class="account-title">Привет, {{ user.username }}!</p>
+                    {% else %}
+                    <a href="{% url 'login' %}">Войти</a>
+                    {% endif %}
+                    <img class="account-avatar" src="{% static "images/avatar.png"%}"/>
+                </div>
+            </div>
+        </div>
+    </header>
+    <section class="main-content">
+        <div class="bg-white offset">
+            <div class="container">
+                <div class="flex-between">
+                    <h1>Личный кабинет</h1>
+                    <div class="routes-settings flex-between">
+                         {% if user.is_authenticated %}
+                        <button class="button main-button big-button new-route-btn">Новый маршрут</button>
+                        <a href="{% url 'logout' %}" class="button reverse-button big-button logout-btn">Выйти</a>
+                        {% endif %}
+                    </div>
+                </div>
+                <div class="historic-routes">
+                    <div class="tabs">
+                        <div class="flex-between">
+                            <div class="tabs-nav flex">
+                                <div data-tab="saved-routes" class="tabs-nav-item active">Сохраненные маршруты</div>
+                                <div data-tab="my-routes" class="tabs-nav-item">Пройденные маршруты</div>
+                                <div data-tab="settings" class="tabs-nav-item">Настройки</div>
+                            </div>
+                        </div>
+                        <div class="tab-content">
+                            <div id="saved-routes" class="b-tab active">
+                                {% for cart_item in cart_items %}
+                                <div class="historic-routes-item flex-between">
+                                    <div class="historic-routes-item-frame">
+                                        <div style="position:relative;overflow:hidden;">
+                                            <a href="https://yandex.by/maps/157/minsk/?utm_medium=mapframe&utm_source=maps" style="color:#eee;font-size:12px;position:absolute;top:0px;">Минск</a>
+                                            <a href="{{ cart_item.product.marsh_url_1 }}"  style="color:#eee;font-size:12px;position:absolute;top:14px;">Яндекс.Карты</a>
+                                            <iframe src="{{ cart_item.product.marsh_url_2 }}" width="560" height="400" frameborder="1" allowfullscreen="true" style="position:relative;"></iframe>
+                                        </div>
+                                    </div>
+                                    <div class="historic-routes-item-content">
+                                        <h3>{{ cart_item.product.marsh_name }}</h3>
+                                        <div class="clocks flex">
+                                            <div class="clocks-item clocks-item-miles">{{ cart_item.product.marsh_km }} км</div>
+                                            <div class="clocks-item clocks-item-hours">{{ cart_item.product.marsh_time }} ч</div>
+                                            <div class="clocks-item clocks-item-objects">{{ cart_item.product.marsh_obj }} объектов</div>
+                                        </div>
+                                        <div class="historic-routes-item-text">
+                                           {{ cart_item.product.marsh_text }}
+                                        </div>
+                                        <div class="historic-routes-item-buttons flex">
+                                            <button class="reverse-button small-button button">Редактировать маршрут</button>
+                                        </div>
+                                    </div>
+                                </div>
+                                {% endfor %}
+                            <div id="my-routes" class="b-tab">
+                                <div class="my-routes">                         
+                                    <div class="my-routes-item">
+                                        <div class="my-routes-map"> 
+                                            <img src="{% static "images/frame.png"%}" alt="">
+                                        </div>
+                                        <h3>Название пройденного маршрута 1</h3>
+                                        <div class="clocks flex">
+                                            <div class="clocks-item clocks-item-miles">8 км</div>
+                                            <div class="clocks-item clocks-item-hours">1.5 ч</div>
+                                            <div class="clocks-item clocks-item-objects">5 объектов</div>
+                                        </div>
+                                    </div>
+                                    <div class="my-routes-item">
+                                        <div class="my-routes-map"> 
+                                            <img src="{% static "images/frame.png"%}" alt="">
+                                        </div>
+                                        <h3>Название пройденного маршрута 1</h3>
+                                        <div class="clocks flex">
+                                            <div class="clocks-item clocks-item-miles">8 км</div>
+                                            <div class="clocks-item clocks-item-hours">1.5 ч</div>
+                                            <div class="clocks-item clocks-item-objects">5 объектов</div>
+                                        </div>
+                                    </div>
+                                    <div class="my-routes-item">
+                                        <div class="my-routes-map"> 
+                                            <img src="{% static "images/frame.png"%}" alt="">
+                                        </div>
+                                        <h3>Название пройденного маршрута 1</h3>
+                                        <div class="clocks flex">
+                                            <div class="clocks-item clocks-item-miles">8 км</div>
+                                            <div class="clocks-item clocks-item-hours">1.5 ч</div>
+                                            <div class="clocks-item clocks-item-objects">5 объектов</div>
+                                        </div>
+                                    </div>
+                                    <div class="my-routes-item">
+                                        <div class="my-routes-map"> 
+                                            <img src="{% static "images/frame.png"%}" alt="">
+                                        </div>
+                                        <h3>Название пройденного маршрута 1</h3>
+                                        <div class="clocks flex">
+                                            <div class="clocks-item clocks-item-miles">8 км</div>
+                                            <div class="clocks-item clocks-item-hours">1.5 ч</div>
+                                            <div class="clocks-item clocks-item-objects">5 объектов</div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div id="settings" class="b-tab">
+                                <div class="settings-person">
+                                    <div class="for-person-img">
+                                        <img src="{% static "images/person.png"%}" alt="">
+                                    </div>
+                                    <button class="small-button main-button button change-photo-btn">Изменить фото</button>
+                                    <button class="small-button reverse-button button delete-photo-btn">Удалить</button>
+                                </div>
+                                <div class="settings-form">
+                                    <div class="login-form-item">
+                                        <div class="label bold">Имя и Фамилия</div>
+                                        <input class="login-form-input input" type="text" placeholder="Иван Иванов">
+                                    </div>
+                                    <div class="login-form-item">
+                                        <div class="label bold">Телефон</div>
+                                        <input class="login-form-input input" type="text" placeholder="+375 29 123 98 98">
+                                    </div>
+                                    <div class="login-form-item">
+                                        <div class="label bold">Email</div>
+                                        <input class="login-form-input input" type="text" placeholder="example@gmail.com">
+                                    </div>
+                                    <h3>Изменить пароль</h3>
+                                    <div class="login-form-item">
+                                        <div class="label bold">Старый пароль</div>
+                                        <input class="login-form-input input" type="text" placeholder="Введите новый пароль">
+                                    </div>
+                                    <div class="login-form-item">
+                                        <div class="label bold">Новый пароль</div>
+                                        <input class="login-form-input input" type="text" placeholder="Введите новый пароль">
+                                    </div>
+                                    <button class="button main-button big-button width100">Сохранить изменения</button>
+
+                                </div>
+                               
+                                
+                            </div>
+                        </div>
+                    </div>
+                </div>
+         
+            </div>
+        </div>
+    </section>
+    <footer>
+        <div class="container flex-between">
+            <div class="address-block">
+                <div class="ontop">
+                    Наверх
+                </div>
+                <p class="phone">+375 29 123 98 98</p>
+                <div class="mail">example@gmail.com</div>
+            </div>
+            <div class="footer-nav">
+                <a href="/" class="footer-nav-item">Маршруты</a>
+                <a href="{%url 'articles'%}" class="footer-nav-item">Статьи</a>
+                <a href="{%url 'about'%}"  class="footer-nav-item">О нас</a>
+                <a href="{%url 'objects'%}"class="footer-nav-item">Объекты</a>
+                <a href="{%url 'navigator'%}"  class="footer-nav-item">Навигатор</a>
+                {% if user.is_authenticated %}
+                    <a href="{%url 'saved'%}" class="nav-item">Кабинет</a>
+                    {% endif %}
+            </div>
+            <div class="footer-text">
+                Сайт разработан в рамках реализации инициативы «Быхов-инновационный», 
+                в рамках проекта «Поддержка экономического развития на местном уровне 
+                в Республике Беларусь», который финансируется Европейским союзом (ЕС)
+                 и реализуется Программой развития ООН (ПРООН) в партнерстве 
+                 с Министерством экономики Республики Беларусь
+            </div>
+            <div class="footer-logo">
+                <a href="/" class="logo flex-between">
+                    <div>
+                        <p class="logo-top">Быхов</p>
+                        <p class="logo-bottom">Велосипедный</p>
+                    </div>
+                    <img src="{% static "images/logo.svg"%}" class="logo-img" />
+                </a>
+                <div class="copy">&copy; 2020 Быхов Велосипедный</div>
+            </div>
+        </div>
+    </footer>
+    <script src="pure-js-tab.js"></script>
+    <script>
+        var connectTabs = new Tabs();
+    </script>
+</body>
+</html>

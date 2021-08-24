@@ -1,0 +1,115 @@
+<!DOCTYPE html>
+{%load static%}
+
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title></title>
+    <link href="https://fonts.googleapis.com/css2?family=Raleway:wght@400;600;900&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="{%static "css/style.css"%}">
+</head>
+<body>
+    <header>
+        <div class="container">
+            <div class="top-header flex-between">
+                <a href="/" class="logo flex-between">
+                    <div>
+                        <p class="logo-top">Быхов</p>
+                        <p class="logo-bottom">Велосипедный</p>
+                    </div>
+                    <img src="{% static "images/logo.svg"%}" class="logo-img" />
+                </a>
+                <div class="partners">
+                    <img src="{% static "images/es.png"%}" />
+                    <img src="{% static "images/rb.png"%}"  />
+                    <img src="{% static "images/undp.png"%}"  />
+                </div>
+            </div>
+            <div class="flex-between">
+                <div class="nav">
+                    <a href="/" class="nav-item active">Маршруты</a>
+                    <a href="{%url 'articles'%}" class="nav-item">Статьи</a>
+                    <a href="{%url 'about'%}" class="nav-item">О нас</a>
+                    <a href="{% url 'objects'%}" class="nav-item">Объекты</a>
+                    <a href="{%url 'navigator'%}"  class="nav-item">Навигатор</a>
+                    {% if user.is_authenticated %}
+                    <a href="{%url 'saved'%}" class="nav-item">Кабинет</a>
+                    {% endif %}
+                </div>
+                <div class="account flex-between">
+                    {% if user.is_authenticated %}
+                    <p class="account-title">Привет, {{ user.username }}!</p>
+                    {% else %}
+                    <a href="{% url 'login' %}">Войти</a>
+                    {% endif %}
+                    <img class="account-avatar" src="{% static "images/avatar.png"%}"/>
+                </div>
+            </div>
+        </div>
+    </header>
+    <section class="main-content">
+<div class="article bg-white">
+            <div class="container">
+
+        <div class="flex-between main-article-container">
+            <div class="main-article">
+                <h1>{{ article.article_heading }}</h1>
+                <p>{{ article.article_text}}</p>
+            </div>
+            <div class="main-article-img">
+                <img class="account-avatar" src="{{ article.article_image.url }}" />
+            </div>
+        </div>
+        <div class="article-content">
+                {{ article.article_big_text}}
+        </div>
+            <div class="match-articles">
+                <h5>Похожие статьи:</h5>
+                <a href="#">Пример похожей статьи 1</a>
+                <a href="#">Пример похожей статьи 2</a>
+                <a href="#">Пример похожей статьи 3</a>
+            </div>
+
+            </div>
+        </div>
+    </section>
+    <footer>
+        <div class="container flex-between">
+            <div class="address-block">
+                <div class="ontop">
+                    Наверх
+                </div>
+                <p class="phone">+375 29 123 98 98</p>
+                <div class="mail">example@gmail.com</div>
+            </div>
+            <div class="footer-nav">
+                <a href="/" class="footer-nav-item">Маршруты</a>
+                <a href="{%url 'articles'%}" class="footer-nav-item">Статьи</a>
+                <a href="{%url 'about'%}"  class="footer-nav-item">О нас</a>
+                <a href="{%url 'objects'%}"class="footer-nav-item">Объекты</a>
+                <a href="{%url 'navigator'%}" class="footer-nav-item">Навигатор</a>
+                <a href="{%url 'saved'%}" class="footer-nav-item">Кабинет</a>
+                <a href="{%url 'registration'%}" class="footer-nav-item">Регистрация</a>
+            </div>
+            <div class="footer-text">
+                Сайт разработан в рамках реализации инициативы «Быхов-инновационный»,
+                в рамках проекта «Поддержка экономического развития на местном уровне
+                в Республике Беларусь», который финансируется Европейским союзом (ЕС)
+                 и реализуется Программой развития ООН (ПРООН) в партнерстве
+                 с Министерством экономики Республики Беларусь
+            </div>
+            <div class="footer-logo">
+                <a href="/" class="logo flex-between">
+                    <div>
+                        <p class="logo-top">Быхов</p>
+                        <p class="logo-bottom">Велосипедный</p>
+                    </div>
+                    <img src="{% static "images/logo.svg" class="logo-img"%}"  />
+                </a>
+                <div class="copy">&copy; 2020 Быхов Велосипедный</div>
+            </div>
+        </div>
+    </footer>
+</body>
+</html>

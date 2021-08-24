@@ -1,0 +1,18 @@
+html, body {
+    margin: 0;
+    padding: 0;
+    border: 0;
+}
+:focus {
+    outline: 0;
+}
+ol, ul {
+	list-style: none;
+}
+a:active,
+a:hover {
+    outline: 0;
+}
+img {
+    border: 0;
+}
